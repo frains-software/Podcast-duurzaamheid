@@ -12,3 +12,6 @@ ios/**/*.xcuserstate
 DerivedData/
 
 .DS_Store
+
+# lokale voorproeven (vervangende stem), niet publiceren
+Grondstof-voorproef-*.mp3
