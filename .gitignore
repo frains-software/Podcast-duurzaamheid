@@ -1,0 +1,14 @@
+# studio
+build/
+_site/
+assets/audio/generated/
+__pycache__/
+*.pyc
+.venv/
+
+# Xcode
+ios/**/xcuserdata/
+ios/**/*.xcuserstate
+DerivedData/
+
+.DS_Store

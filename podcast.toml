@@ -1,0 +1,69 @@
+# ─────────────────────────────────────────────────────────────
+#  Grondstof — centrale configuratie
+#  Eén bron van waarheid voor de studio (Python), de website,
+#  de RSS-feed (Spotify / Apple Podcasts) en de iPhone-app.
+# ─────────────────────────────────────────────────────────────
+
+[show]
+title       = "Grondstof"
+subtitle    = "Elke ochtend vijf minuten circulair nieuws"
+tagline     = "Dagelijks stof tot nadenken"
+description = """Grondstof is het dagelijkse nieuwsbulletin over duurzaamheid en circulaire economie. \
+Elke ochtend om negen uur neemt Frans van den Berge in vijf minuten het belangrijkste nieuws door: \
+beleid uit Den Haag en Brussel, bewegingen in markten en ketens, en innovaties in recycling en materialen. \
+Met duiding vanuit de praktijk van De Graaf Groep, Wastenet, Circular&Co. en Product for Product: \
+want afval bestaat niet, het is grondstof."""
+language    = "nl"
+
+host         = "Frans van den Berge"
+# De rol waarmee Frans zich in het bulletin voorstelt. Niet als privépersoon, maar namens de bedrijven.
+host_role    = "namens De Graaf Groep"
+organisation = "De Graaf Groep"
+companies    = ["De Graaf Groep", "Wastenet", "Circular&Co.", "Product for Product"]
+
+# Verplicht voor Spotify for Creators en Apple Podcasts: hier komt de verificatiecode binnen.
+# Gebruik bij voorkeur een zakelijk adres (bijv. marketing@degraafgroep.nl). Dit adres wordt openbaar in de feed.
+owner_name  = "De Graaf Groep"
+owner_email = ""
+
+copyright   = "© De Graaf Groep"
+category    = "News"
+subcategory = "Business News"
+category2   = "Business"
+explicit    = false
+
+# Publieke URL waar GitHub Pages de feed, audio en website host.
+site_url    = "https://frains-software.github.io/Podcast-duurzaamheid"
+
+# Vul in zodra de show live staat; de app toont dan 'Luister op Spotify'.
+spotify_url = ""
+apple_url   = ""
+
+[schedule]
+timezone     = "Europe/Amsterdam"
+publish_time = "09:00"
+# Aantal afleveringen dat in de feed en op de website blijft (audio-archief staat altijd in GitHub Releases).
+keep_episodes = 90
+
+[voice]
+# ElevenLabs Eleven v4 — hoogste kwaliteit, ondersteunt (professionele) voice clones.
+model_id         = "eleven_v4"
+# Leeg = automatisch jouw gekloonde stem zoeken in je ElevenLabs-account.
+# Of zet het GitHub-variabele / omgevingsvariabele ELEVENLABS_VOICE_ID.
+voice_id         = ""
+voice_name_hint  = "Frans"
+language_code    = "nl"
+# Hogere stabiliteit = rustigere, consistente nieuwslezer-voordracht.
+stability        = 0.62
+similarity_boost = 0.85
+output_format    = "mp3_44100_128"
+# Optionele audio-tag die vóór elk segment wordt gezet, bijvoorbeeld "[professional]".
+# Standaard uit: de zakelijke voordracht komt uit de tekst zelf en de stabiliteit.
+delivery_tag     = ""
+
+[audio]
+bitrate        = "96k"
+loudness_lufs  = -16.0
+true_peak      = -1.5
+gap_seconds    = 0.45
+peaks_per_second = 12

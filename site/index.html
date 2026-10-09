@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Grondstof · circulair nieuws in vijf minuten</title>
+  <meta name="description" content="Elke ochtend om negen uur vijf minuten nieuws over duurzaamheid en circulaire economie. Met Frans van den Berge namens De Graaf Groep.">
+  <meta name="theme-color" content="#14071f">
+  <link rel="icon" href="favicon.png">
+  <link rel="apple-touch-icon" href="app-icon-1024.png">
+  <link rel="alternate" type="application/rss+xml" title="Grondstof" href="feed.xml">
+  <meta property="og:title" content="Grondstof">
+  <meta property="og:description" content="Dagelijks stof tot nadenken: vijf minuten circulair nieuws.">
+  <meta property="og:image" content="cover-1400.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+  <header class="wrap top">
+    <a class="brand" href="./"><img src="favicon.png" alt=""><span>Grondstof</span></a>
+    <nav class="subscribe" id="subscribe">
+      <a class="pill" id="spotify-link" hidden>Spotify</a>
+      <a class="pill" id="apple-link" hidden>Apple Podcasts</a>
+      <button class="pill" id="rss-copy" type="button">RSS-feed kopiëren</button>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" id="hero">
+      <p class="eyebrow" id="hero-date">Elke ochtend om 09:00</p>
+      <h1 id="hero-title">Dagelijks stof tot nadenken.</h1>
+      <p class="lede" id="hero-summary">Vijf minuten nieuws over duurzaamheid en circulaire economie, met duiding vanuit de praktijk van De Graaf Groep.</p>
+
+      <div class="player" id="player" hidden>
+        <button class="play" id="play" type="button" aria-label="Afspelen">
+          <svg viewBox="0 0 24 24" class="i-play"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>
+          <svg viewBox="0 0 24 24" class="i-pause"><rect x="6.5" y="5" width="4" height="14" rx="1.2"/><rect x="13.5" y="5" width="4" height="14" rx="1.2"/></svg>
+        </button>
+        <div class="track">
+          <canvas id="wave" height="56" aria-label="Golfvorm, klik om te spoelen"></canvas>
+          <div class="times"><span id="t-now">0:00</span><span id="chapter-now"></span><span id="t-total">0:00</span></div>
+        </div>
+        <audio id="audio" preload="metadata"></audio>
+      </div>
+
+      <div class="number" id="number" hidden>
+        <span class="value" id="number-value"></span>
+        <span class="label" id="number-label"></span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Meelezen</h2>
+        <div class="transcript" id="transcript"><p class="muted">Het transcript verschijnt hier zodra er een aflevering is.</p></div>
+      </article>
+      <aside class="card">
+        <h2>In deze aflevering</h2>
+        <ol class="chapters" id="chapters"></ol>
+        <h2 class="mt">Eerdere afleveringen</h2>
+        <ul class="archive" id="archive"></ul>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>Grondstof is een uitgave van De Graaf Groep, met Wastenet, Circular&amp;Co. en Product for Product. Gemaakt met de stem van Frans van den Berge via ElevenLabs.</p>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

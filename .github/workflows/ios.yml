@@ -1,0 +1,27 @@
+name: iOS-app
+
+# Controleert bij elke wijziging dat de iPhone-app compileert (simulator, zonder ondertekening).
+on:
+  push:
+    paths: ["ios/**", ".github/workflows/ios.yml"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - name: Xcode
+        run: xcodebuild -version
+      - name: Bouwen voor de simulator
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project ios/Grondstof.xcodeproj \
+            -target Grondstof \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tee build.log | grep -E "error:|warning:|BUILD (SUCCEEDED|FAILED)" || true
+          grep -q "BUILD SUCCEEDED" build.log
