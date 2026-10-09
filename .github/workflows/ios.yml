@@ -78,10 +78,11 @@ jobs:
           xcrun simctl launch "$udid" nl.degraafgroep.grondstof
           sleep 8
           xcrun simctl io "$udid" screenshot shots/1-home.png
-          xcrun simctl openurl "$udid" "grondstof://play"
-          sleep 12
+          xcrun simctl terminate "$udid" nl.degraafgroep.grondstof
+          xcrun simctl launch "$udid" nl.degraafgroep.grondstof -autoplay
+          sleep 10
           xcrun simctl io "$udid" screenshot shots/2-player.png
-          sleep 4
+          sleep 3
           xcrun simctl io "$udid" screenshot shots/3-player-later.png
       - uses: actions/upload-artifact@v4
         if: always()

@@ -76,6 +76,12 @@ struct HomeView: View {
         .onAppear {
             withAnimation(.spring(response: 0.7, dampingFraction: 0.8).delay(0.1)) { appeared = true }
         }
+        .task {
+            // Testhaak voor de simulator in CI: `-autoplay` start meteen de nieuwste aflevering.
+            guard ProcessInfo.processInfo.arguments.contains("-autoplay") else { return }
+            await store.refresh()
+            if let latest = store.latest { play(latest) }
+        }
         .onOpenURL { url in
             if url.host() == "play", let latest = store.latest { play(latest) }
         }
