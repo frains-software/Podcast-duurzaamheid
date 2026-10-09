@@ -6,6 +6,13 @@ namens De Graaf Groep, Wastenet, Circular&Co. en Product for Product.
 
 > *Afval bestaat niet, het is grondstof. Nieuws ook: elke ochtend verwerkt tot vijf minuten inzicht.*
 
+<p align="center">
+  <img src="docs/app-home.jpg" width="260" alt="Startscherm van de Grondstof-app">
+  <img src="docs/app-speler.jpg" width="260" alt="Speler met kringloop-visualisatie en meelezen">
+</p>
+
+<sub>Screenshots uit de iPhone-simulator in de CI (met een testtoon in plaats van de stem).</sub>
+
 ```
  08:30  Claude-routine (redactie)      zoekt het nieuws, schrijft redactie/JJJJ-MM-DD.json, pusht
    │

@@ -162,6 +162,12 @@ enum Formatting {
         return f
     }()
 
+    /// "Vrijdag 9 oktober": alleen de eerste letter als hoofdletter.
+    static func dayTitle(_ date: Date) -> String {
+        let text = longDay.string(from: date)
+        return text.prefix(1).uppercased() + text.dropFirst()
+    }
+
     static func clock(_ seconds: Double) -> String {
         guard seconds.isFinite else { return "0:00" }
         let s = max(0, Int(seconds.rounded(.down)))

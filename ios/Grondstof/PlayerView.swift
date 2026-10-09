@@ -110,7 +110,7 @@ struct PlayerView: View {
             Spacer()
             VStack(spacing: 2) {
                 Eyebrow(text: "Aflevering \(episode.number)")
-                Text(Formatting.longDay.string(from: episode.day).capitalized)
+                Text(Formatting.dayTitle(episode.day))
                     .font(.footnote)
                     .foregroundStyle(Color.cream.opacity(0.75))
             }
