@@ -7,7 +7,8 @@ enum AppConfig {
     /// Kan in Instellingen worden overschreven, handig bij een eigen domein.
     static var siteURL: URL {
         if let custom = UserDefaults.standard.string(forKey: "siteURL"),
-           let url = URL(string: custom.trimmingCharacters(in: .whitespaces)), url.scheme == "https" {
+           let url = URL(string: custom.trimmingCharacters(in: .whitespaces)),
+           url.scheme == "https" || ["localhost", "127.0.0.1"].contains(url.host() ?? "") {
             return url
         }
         return defaultSiteURL

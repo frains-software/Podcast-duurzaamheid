@@ -1,13 +1,41 @@
 name: iOS-app
 
-# Controleert bij elke wijziging dat de iPhone-app compileert (simulator, zonder ondertekening).
+# Controleert bij elke wijziging dat de iPhone-app compileert, start hem in de simulator
+# met een testaflevering en bewaart screenshots als artefact.
 on:
   push:
     paths: ["ios/**", ".github/workflows/ios.yml"]
   workflow_dispatch:
 
 jobs:
+  demo-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: studio/requirements.txt
+      - run: pip install -r studio/requirements.txt
+      - name: Testaflevering met testtoon (zonder ElevenLabs)
+        run: |
+          command -v ffmpeg || (sudo apt-get update && sudo apt-get install -y ffmpeg)
+          python -m studio produce 2026-10-09 --fake-voice
+          python - <<'PY'
+          import re, pathlib
+          p = pathlib.Path("podcast.toml")
+          p.write_text(re.sub(r'site_url\s*=\s*".*"', 'site_url    = "http://localhost:8000"', p.read_text()))
+          PY
+          python -m studio site
+      - uses: actions/upload-artifact@v4
+        with:
+          name: demo-site
+          path: _site
+          include-hidden-files: true
+
   build:
+    needs: demo-site
     runs-on: macos-latest
     timeout-minutes: 30
     steps:
@@ -22,6 +50,43 @@ jobs:
             -target Grondstof \
             -sdk iphonesimulator \
             -configuration Debug \
+            ARCHS=arm64 ONLY_ACTIVE_ARCH=NO \
             CODE_SIGNING_ALLOWED=NO \
-            build 2>&1 | tee build.log | grep -E "error:|warning:|BUILD (SUCCEEDED|FAILED)" || true
-          grep -q "BUILD SUCCEEDED" build.log
+            build > build.log 2>&1 || { grep -E "error:" build.log; tail -40 build.log; exit 1; }
+          grep -E "warning:" build.log | grep -v "appintentsmetadataprocessor" | sort -u || true
+          echo "Swift-bestanden gecompileerd: $(grep -c 'SwiftCompile normal' build.log || true)"
+          ls -la ios/build/Debug-iphonesimulator/Grondstof.app | head -20
+      - uses: actions/download-artifact@v4
+        with:
+          name: demo-site
+          path: demo-site
+      - name: Starten in de simulator en screenshots maken
+        run: |
+          (cd demo-site && python3 -m http.server 8000 >/dev/null 2>&1 &)
+          udid=$(xcrun simctl list devices available -j | python3 -c "
+          import json,sys
+          d=json.load(sys.stdin)['devices']
+          phones=[x for k,v in d.items() if 'iOS' in k for x in v if x['name'].startswith('iPhone')]
+          pro=[x for x in phones if 'Pro' in x['name'] and 'Max' not in x['name']]
+          print((pro or phones)[-1]['udid'])")
+          echo "Simulator: $udid"
+          xcrun simctl boot "$udid"
+          xcrun simctl bootstatus "$udid" -b
+          xcrun simctl install "$udid" ios/build/Debug-iphonesimulator/Grondstof.app
+          xcrun simctl spawn "$udid" defaults write nl.degraafgroep.grondstof siteURL "http://localhost:8000"
+          mkdir -p shots
+          xcrun simctl launch "$udid" nl.degraafgroep.grondstof
+          sleep 8
+          xcrun simctl io "$udid" screenshot shots/1-home.png
+          xcrun simctl openurl "$udid" "grondstof://play"
+          sleep 12
+          xcrun simctl io "$udid" screenshot shots/2-player.png
+          sleep 4
+          xcrun simctl io "$udid" screenshot shots/3-player-later.png
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshots
+          path: |
+            shots
+            build.log

@@ -8,6 +8,11 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Dark</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>CFBundleURLTypes</key>
