@@ -36,7 +36,7 @@ explicit    = false
 site_url    = "https://frains-software.github.io/Podcast-duurzaamheid"
 
 # Vul in zodra de show live staat; de app toont dan 'Luister op Spotify'.
-spotify_url = ""
+spotify_url = "https://open.spotify.com/show/3ex4rA2rBUYhEDQOuRffcE"
 apple_url   = ""
 
 [schedule]
