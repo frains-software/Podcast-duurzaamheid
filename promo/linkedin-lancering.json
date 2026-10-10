@@ -1,0 +1,42 @@
+{
+  "name": "linkedin-lancering",
+  "format": { "width": 1080, "height": 1350, "fps": 30 },
+  "cta": {
+    "title": "Luister op Spotify",
+    "lines": ["Elke ochtend om 09:00", "Zoek “Grondstof”"]
+  },
+  "sentences": [
+    {
+      "text": "Wat als u elke ochtend in vijf minuten weet wat er speelt in de circulaire economie?",
+      "kicker": "5 minuten.\nElke ochtend."
+    },
+    {
+      "text": "Ik ben Frans van den Berge van De Graaf Groep. En vanaf nu hoort u mij elke ochtend om negen uur in Grondstof.",
+      "kicker": "09:00"
+    },
+    {
+      "text": "Grondstof is een dagelijks nieuwsbulletin over duurzaamheid en circulariteit.",
+      "kicker": "Duurzaamheid &\ncirculariteit"
+    },
+    {
+      "text": "Nieuwe regels uit Brussel en Den Haag. Bewegingen in de markt. Slimme innovaties in recycling.",
+      "kicker": "Beleid · Markt\n· Innovatie"
+    },
+    {
+      "text": "Kort, zakelijk, en altijd met duiding: wat betekent dit voor uw organisatie?",
+      "kicker": "Met duiding."
+    },
+    {
+      "text": "Want bij De Graaf Groep, Wastenet, Circular&Co en Product for Product zien we het elke dag: afval bestaat niet. Het is grondstof.",
+      "kicker": "Afval bestaat niet.\nHet is grondstof."
+    },
+    {
+      "text": "Luister op Spotify, of zet de Grondstof-app op uw telefoon.",
+      "kicker": "Spotify · App"
+    },
+    {
+      "text": "Vijf minuten. Elke ochtend. Dagelijks stof tot nadenken.",
+      "kicker": "Dagelijks stof\ntot nadenken."
+    }
+  ]
+}

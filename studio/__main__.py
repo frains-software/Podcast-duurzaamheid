@@ -7,6 +7,8 @@
     python -m studio window               toon de afleveringen die gepubliceerd blijven
     python -m studio site                 bouw website, episodes.json en RSS-feed in _site/
     python -m studio assets               (her)genereer tunes, cover en app-icoon
+    python -m studio promo-voice SPEC     spreek een promovideo in
+    python -m studio promo-video SPEC     render een promovideo (MP4 + SRT)
 """
 
 from __future__ import annotations
@@ -112,6 +114,24 @@ def cmd_assets(args) -> int:
     return 0
 
 
+def cmd_promo_voice(args) -> int:
+    from pathlib import Path
+
+    from .promo import voice
+
+    voice(Path(args.spec), fake=args.fake_voice)
+    return 0
+
+
+def cmd_promo_video(args) -> int:
+    from pathlib import Path
+
+    from .promo import render
+
+    render(Path(args.spec), Path(args.out) if args.out else None)
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="studio", description="Grondstof-studio")
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -145,6 +165,16 @@ def main(argv: list[str] | None = None) -> int:
 
     p = sub.add_parser("assets", help="genereer tunes en beeld")
     p.set_defaults(func=cmd_assets)
+
+    p = sub.add_parser("promo-voice", help="spreek een promovideo in")
+    p.add_argument("spec")
+    p.add_argument("--fake-voice", action="store_true")
+    p.set_defaults(func=cmd_promo_voice)
+
+    p = sub.add_parser("promo-video", help="render een promovideo")
+    p.add_argument("spec")
+    p.add_argument("--out", default=None)
+    p.set_defaults(func=cmd_promo_video)
 
     args = parser.parse_args(argv)
     return args.func(args)

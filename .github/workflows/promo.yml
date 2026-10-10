@@ -1,0 +1,39 @@
+name: Promovideo
+
+# Spreekt een promovideo in met de gekloonde stem en rendert hem (MP4 + SRT) als artefact.
+on:
+  workflow_dispatch:
+    inputs:
+      spec:
+        description: "Draaiboek in promo/ (bijv. promo/linkedin-lancering.json)"
+        required: true
+        default: "promo/linkedin-lancering.json"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+      ELEVENLABS_VOICE_ID: ${{ vars.ELEVENLABS_VOICE_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: studio/requirements.txt
+      - run: pip install -r studio/requirements.txt
+      - run: command -v ffmpeg || (sudo apt-get update && sudo apt-get install -y ffmpeg)
+      - name: Inspreken (ElevenLabs Eleven v4)
+        run: python -m studio promo-voice "${{ inputs.spec }}"
+      - name: Renderen
+        run: python -m studio promo-video "${{ inputs.spec }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: promovideo
+          path: |
+            build/promo/*.mp4
+            build/promo/*.srt
+            build/promo/*/voice.mp3
+            build/promo/*/alignment.json
