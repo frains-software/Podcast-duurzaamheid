@@ -45,7 +45,7 @@ Gebruik dus "wij" en "bij De Graaf Groep", geen persoonlijke anekdotes.
   Verzin nooit nieuws. Is het een rustige nieuwsdag, kies dan een relevant rapport of
   een achtergrondverhaal dat deze week verscheen, en zeg dat eerlijk.
 
-## 3. Opbouw van een aflevering (ongeveer 650 tot 720 woorden)
+## 3. Opbouw van een aflevering (ongeveer 620 tot 700 woorden)
 
 | # | `kind`    | Inhoud | Woorden |
 |---|-----------|--------|---------|
@@ -123,6 +123,6 @@ Draai na het schrijven altijd:
 python3 -m studio validate JJJJ-MM-DD
 ```
 
-De validator controleert de structuur, de lengte (doel: 4:30 tot 5:30 minuten), cijfers in
+De validator controleert de structuur, de lengte (doel: 4:45 tot 5:20 minuten inclusief tunes), cijfers in
 gesproken tekst, afkortingen en bronnen. Los alle **fouten** op en bij voorkeur ook alle
 **waarschuwingen**.

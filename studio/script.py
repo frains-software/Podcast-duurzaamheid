@@ -17,10 +17,11 @@ KIND_LABELS = {
     "outro": "Afsluiting",
 }
 
-# Gemiddeld spreektempo van een nieuwslezer in het Nederlands (woorden per seconde).
+# Gemeten op de pilot met de stemkloon (Eleven v4): 726 woorden gaven 5:27 inclusief tunes.
 WORDS_PER_SECOND = 2.4
-TARGET_SECONDS = (270, 330)
-HARD_SECONDS = (200, 420)
+MUSIC_SECONDS = 24  # opening, overgangen en slottune
+TARGET_SECONDS = (285, 320)
+HARD_SECONDS = (220, 420)
 
 TAG_RE = re.compile(r"\[[^\]]{1,40}\]")
 DIGIT_RE = re.compile(r"\d")
@@ -76,7 +77,8 @@ class Script:
 
     @property
     def estimated_seconds(self) -> float:
-        return self.words / WORDS_PER_SECOND
+        """Geschatte lengte van de complete aflevering, inclusief tunes."""
+        return self.words / WORDS_PER_SECOND + MUSIC_SECONDS
 
     @property
     def sources(self) -> list[Source]:
