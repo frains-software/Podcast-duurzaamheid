@@ -18,7 +18,7 @@
 ## Bronnen die de voorkeur hebben
 
 - Rijksoverheid, Europese Commissie, CBS, Rijkswaterstaat
-- NOS, Financieele Dagblad, Trouw
+- NOS, Financieele Dagblad, Trouw, RTL, NU.nl
 - Vakmedia: Afvalgids, Recycling Magazine, Euwid, Change Inc., Duurzaam Ondernemen
 
 ## Liever niet
@@ -34,5 +34,4 @@
 
 ## Tip voor de komende dagen (eenmalig)
 
-_Leeg. Zet hier bijvoorbeeld: "Volgende week is de Week van de Circulaire Economie, besteed daar
-aandacht aan." Haal de tip weg zodra hij niet meer geldt._
+"zaterdag 10 oktober is het Dag van de Duurzaamhied"
