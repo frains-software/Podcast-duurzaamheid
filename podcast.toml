@@ -24,7 +24,7 @@ companies    = ["De Graaf Groep", "Wastenet", "Circular&Co.", "Product for Produ
 # Verplicht voor Spotify for Creators en Apple Podcasts: hier komt de verificatiecode binnen.
 # Gebruik bij voorkeur een zakelijk adres (bijv. marketing@degraafgroep.nl). Dit adres wordt openbaar in de feed.
 owner_name  = "De Graaf Groep"
-owner_email = ""
+owner_email = "fberge@xs4all.nl"
 
 copyright   = "© De Graaf Groep"
 category    = "News"
