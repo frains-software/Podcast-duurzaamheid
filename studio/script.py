@@ -50,8 +50,13 @@ class Segment:
 
     @property
     def spoken(self) -> str:
-        """Tekst zoals hij naar de stem gaat (zonder eventuele audio-tags)."""
+        """Gesproken tekst zoals hij in het transcript staat (zonder eventuele audio-tags)."""
         return normalise(TAG_RE.sub("", self.text))
+
+    @property
+    def voiced(self) -> str:
+        """Tekst zoals hij naar de stem gaat: met de uitspraaklijst uit podcast.toml toegepast."""
+        return pronounce(self.spoken)
 
     @property
     def label(self) -> str:
@@ -100,6 +105,15 @@ class ScriptError(Exception):
         super().__init__("\n".join(errors))
         self.errors = errors
         self.warnings = warnings
+
+
+def pronounce(text: str) -> str:
+    """Vervangt namen door hun fonetische schrijfwijze ([pronunciation] in podcast.toml)."""
+    from . import config
+
+    for written, spoken in config.load().get("pronunciation", {}).items():
+        text = re.sub(rf"(?<!\w){re.escape(written)}(?!\w)", spoken, text)
+    return text
 
 
 def normalise(text: str) -> str:

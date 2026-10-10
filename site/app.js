@@ -24,6 +24,7 @@ async function init() {
     $("rss-copy").textContent = "Gekopieerd ✓";
     setTimeout(() => ($("rss-copy").textContent = "RSS-feed kopiëren"), 2000);
   });
+  if (show.linkedinUrl) $("linkedin-link").href = show.linkedinUrl;
   for (const [id, url] of [["spotify-link", show.spotifyUrl], ["apple-link", show.appleUrl]]) {
     if (url) Object.assign($(id), { href: url, hidden: false, target: "_blank", rel: "noopener" });
   }

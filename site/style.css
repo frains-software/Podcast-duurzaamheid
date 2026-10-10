@@ -107,3 +107,4 @@ h2 { font: 600 13px Inter, sans-serif; text-transform: uppercase; letter-spacing
 .archive strong { font-weight: 500; }
 
 .foot { color: var(--muted); font-size: 13px; padding: 10px 0 40px; }
+.foot a { color: var(--amber); }

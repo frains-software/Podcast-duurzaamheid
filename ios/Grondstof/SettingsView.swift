@@ -50,7 +50,9 @@ struct SettingsView: View {
                     .padding(.vertical, 4)
                     LabeledContent("Presentatie", value: store.show?.host ?? "Frans van den Berge")
                     LabeledContent("Namens", value: store.show?.organisation ?? "De Graaf Groep")
-                    LabeledContent("Stem", value: "ElevenLabs Eleven v4")
+                    Link(destination: store.show?.linkedInURL ?? AppConfig.linkedIn) {
+                        Label("Frans van den Berge op LinkedIn", systemImage: "person.crop.square")
+                    }
                     if let site = store.show?.websiteURL {
                         Link(destination: site) { Label("Website en webspeler", systemImage: "safari") }
                     }

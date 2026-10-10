@@ -56,6 +56,9 @@ def write_script(day: str) -> Path:
     d = date.fromisoformat(day)
     spoken_date = f"{WEEKDAYS[d.weekday()]} {d.day} {MONTHS[d.month - 1]}"
     statute = (config.REDACTIE / "REDACTIESTATUUT.md").read_text(encoding="utf-8")
+    wishes_path = config.REDACTIE / "REDACTIEWENSEN.md"
+    if wishes_path.exists():
+        statute += "\n\n" + wishes_path.read_text(encoding="utf-8")
     system = (
         "Je bent de eindredacteur van het dagelijkse podcastbulletin Grondstof. Volg het redactiestatuut "
         "hieronder strikt. Doe eerst gedegen nieuwsonderzoek met de zoek- en ophaaltools en gebruik alleen "

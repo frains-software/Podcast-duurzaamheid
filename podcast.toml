@@ -19,6 +19,7 @@ host         = "Frans van den Berge"
 # De rol waarmee Frans zich in het bulletin voorstelt. Niet als privépersoon, maar namens de bedrijven.
 host_role    = "namens De Graaf Groep"
 organisation = "De Graaf Groep"
+linkedin_url = "https://www.linkedin.com/in/fransvdberge/"
 companies    = ["De Graaf Groep", "Wastenet", "Circular&Co.", "Product for Product"]
 
 # Verplicht voor Spotify for Creators en Apple Podcasts: hier komt de verificatiecode binnen.
@@ -38,6 +39,12 @@ site_url    = "https://frains-software.github.io/Podcast-duurzaamheid"
 # Vul in zodra de show live staat; de app toont dan 'Luister op Spotify'.
 spotify_url = "https://open.spotify.com/show/3ex4rA2rBUYhEDQOuRffcE"
 apple_url   = ""
+
+[pronunciation]
+# Hoe de stem lastige namen moet uitspreken. Links: zoals het in de tekst en de app staat.
+# Rechts: hoe het naar ElevenLabs gaat (fonetisch). Hoofdlettergevoelig, alleen hele woorden.
+"Wastenet" = "Weestnet"
+"Circular&Co" = "Circular and Co"
 
 [schedule]
 timezone     = "Europe/Amsterdam"

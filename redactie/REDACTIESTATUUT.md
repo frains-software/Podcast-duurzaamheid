@@ -22,6 +22,10 @@ Gebruik dus "wij" en "bij De Graaf Groep", geen persoonlijke anekdotes.
 
 ## 2. Nieuwsselectie
 
+**Lees eerst `redactie/REDACTIEWENSEN.md`.** Daarin zet Frans zijn actuele wensen: onderwerpen,
+bronnen en tips. Die gaan vóór de standaardmix hieronder, zolang de regels voor feiten en
+bronnen gewoon gelden.
+
 - **Actualiteit:** nieuws van de afgelopen 24 uur, desnoods 72 uur (maandag en het weekend).
   Nooit iets dat al in een van de vorige zeven afleveringen stond (bekijk `redactie/`),
   behalve als er een echte nieuwe ontwikkeling is.

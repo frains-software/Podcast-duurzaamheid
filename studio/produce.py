@@ -11,7 +11,7 @@ import numpy as np
 
 from . import audio, config, jingle
 from .elevenlabs import ElevenLabs, Speech
-from .script import KIND_LABELS, Script, Segment, load, split_sentences
+from .script import KIND_LABELS, Script, Segment, load, pronounce, split_sentences
 
 INTRO_OVERLAP = 1.6  # de staart van de openingstune loopt onder de eerste woorden door
 OUTRO_DELAY = 0.35  # korte adempauze tussen het laatste woord en de slottune
@@ -32,7 +32,7 @@ def produce(day: str, fake_voice: bool = False) -> dict:
 
     takes = []
     for i, seg in enumerate(script.segments):
-        text = f"{vcfg.get('delivery_tag', '')} {seg.spoken}".strip()
+        text = f"{vcfg.get('delivery_tag', '')} {seg.voiced}".strip()
         speech = _synthesise(client, cache, i, text, voice_id, vcfg) if client else _fake_speech(text)
         clip = audio.decode(speech.audio)
         clip, trimmed = audio.trim_silence(clip)
@@ -139,11 +139,13 @@ def _cues(seg: Segment, text: str, speech: Speech, start: float, length: float, 
     aligned = speech.char_starts and speech.characters and len(speech.characters) == len(text)
     cursor = 0
     for sentence in sentences:
-        pos = text.find(sentence, cursor)
+        # Het transcript toont de geschreven zin; de stem kreeg de fonetische versie.
+        voiced = pronounce(sentence)
+        pos = text.find(voiced, cursor)
         if pos < 0:
             aligned = False
             break
-        cursor = pos + len(sentence)
+        cursor = pos + len(voiced)
         if aligned:
             times.append(max(0.0, speech.char_starts[pos] - trimmed))
     if not aligned or len(times) != len(sentences):

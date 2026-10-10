@@ -21,6 +21,7 @@ struct ShowInfo: Codable, Hashable {
     let website: String
     let spotifyUrl: String?
     let appleUrl: String?
+    let linkedinUrl: String?
     let publishTime: String
     let timezone: String
 
@@ -28,6 +29,7 @@ struct ShowInfo: Codable, Hashable {
     var websiteURL: URL? { URL(string: website) }
     var spotifyURL: URL? { spotifyUrl.flatMap(URL.init(string:)) }
     var appleURL: URL? { appleUrl.flatMap(URL.init(string:)) }
+    var linkedInURL: URL? { linkedinUrl.flatMap(URL.init(string:)) ?? AppConfig.linkedIn }
 }
 
 struct SourceLink: Codable, Hashable, Identifiable {

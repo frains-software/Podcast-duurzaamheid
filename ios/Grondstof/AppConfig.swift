@@ -17,6 +17,7 @@ enum AppConfig {
     static var indexURL: URL { siteURL.appending(path: "episodes.json") }
     static var feedURL: URL { siteURL.appending(path: "feed.xml") }
 
+    static let linkedIn = URL(string: "https://www.linkedin.com/in/fransvdberge/")!
     static let spotifyForCreators = URL(string: "https://creators.spotify.com/")!
     static let applePodcastsConnect = URL(string: "https://podcastsconnect.apple.com/")!
 

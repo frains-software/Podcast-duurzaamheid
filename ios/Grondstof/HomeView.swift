@@ -123,8 +123,15 @@ struct HomeView: View {
     }
 
     private var footer: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text("Gepresenteerd door \(store.show?.host ?? "Frans van den Berge"), \(store.show?.hostRole ?? "namens De Graaf Groep").")
+        VStack(alignment: .leading, spacing: 8) {
+            Link(destination: store.show?.linkedInURL ?? AppConfig.linkedIn) {
+                HStack(spacing: 6) {
+                    Text("Gemaakt door \(store.show?.host ?? "Frans van den Berge")")
+                    Image(systemName: "arrow.up.right.square")
+                }
+                .foregroundStyle(Color.cream.opacity(0.85))
+            }
+            .accessibilityHint("Opent het LinkedIn-profiel")
             Text((store.show?.companies ?? ["De Graaf Groep", "Wastenet", "Circular&Co.", "Product for Product"]).joined(separator: "  ·  "))
                 .foregroundStyle(Color.amber.opacity(0.9))
         }

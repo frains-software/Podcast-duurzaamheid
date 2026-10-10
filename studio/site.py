@@ -75,6 +75,7 @@ def _show_block() -> dict:
         "host": show["host"],
         "hostRole": show["host_role"],
         "organisation": show["organisation"],
+        "linkedinUrl": show.get("linkedin_url") or None,
         "companies": show["companies"],
         "cover": _url("cover-1400.jpg"),
         "feedUrl": _url("feed.xml"),
@@ -150,6 +151,8 @@ def _shownotes(meta: dict) -> str:
     show = config.show()
     parts.append(f"<p>{html.escape(show['title'])}: {html.escape(show['tagline'].lower())}. "
                  f"Elke ochtend om {config.schedule()['publish_time']} een nieuwe aflevering.</p>")
+    if show.get("linkedin_url"):
+        parts.append(f'<p>Gemaakt door <a href="{html.escape(show["linkedin_url"])}">{html.escape(show["host"])}</a>.</p>')
     return "".join(parts)
 
 
@@ -204,7 +207,10 @@ def _feed(episodes: list[dict]) -> bytes:
         ET.SubElement(ch, f"{{{it}}}category", {"text": show["category2"]})
     sub(ch, f"{{{pc}}}guid", _podcast_guid())
     sub(ch, f"{{{pc}}}medium", "podcast")
-    sub(ch, f"{{{pc}}}person", show["host"], role="host")
+    person = {"role": "host"}
+    if show.get("linkedin_url"):
+        person["href"] = show["linkedin_url"]
+    sub(ch, f"{{{pc}}}person", show["host"], **person)
 
     for m in episodes:
         item = sub(ch, "item")

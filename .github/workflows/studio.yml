@@ -92,6 +92,14 @@ jobs:
         if: steps.plan.outputs.action != 'skip'
         run: python -m studio validate "${{ steps.plan.outputs.date }}"
 
+      - name: Eerdere spraakopnames hergebruiken
+        if: steps.plan.outputs.action != 'skip'
+        uses: actions/cache@v4
+        with:
+          path: build/tts/${{ steps.plan.outputs.date }}
+          key: tts-${{ steps.plan.outputs.date }}-${{ github.run_id }}
+          restore-keys: tts-${{ steps.plan.outputs.date }}-
+
       - name: Inspreken en monteren (ElevenLabs Eleven v4)
         if: steps.plan.outputs.action != 'skip'
         run: |

@@ -95,6 +95,13 @@ python -m studio assets                         # tunes, cover en app-icoon opni
 
 ## Redactie en stem
 
+**De redactie sturen:** pas `redactie/REDACTIEWENSEN.md` aan via GitHub (potloodje, daarna *Commit changes*).
+Daar zet je onderwerpen, bronnen en eenmalige tips; de redactie leest het elke ochtend. Welke bronnen er
+gebruikt zijn, zie je per aflevering in de app (tab *Bronnen*), in de shownotes en in `redactie/JJJJ-MM-DD.json`.
+
+**Uitspraak:** lastige namen staan in `podcast.toml` onder `[pronunciation]` (bijvoorbeeld Wastenet → Weestnet).
+In de app en het transcript blijft de echte schrijfwijze staan.
+
 - Het **redactiestatuut** (`redactie/REDACTIESTATUUT.md`) legt vast hoe een aflevering klinkt: een
   rustig, zakelijk bulletin met een opening en koppen, vier berichten met telkens een tune ertussen,
   een duiding vanuit de praktijk van de De Graaf-bedrijven (zonder verkooppraatje), het cijfer van de
