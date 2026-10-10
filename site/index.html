@@ -6,8 +6,13 @@
   <title>Grondstof · circulair nieuws in vijf minuten</title>
   <meta name="description" content="Elke ochtend om negen uur vijf minuten nieuws over duurzaamheid en circulaire economie. Met Frans van den Berge namens De Graaf Groep.">
   <meta name="theme-color" content="#14071f">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Grondstof">
   <link rel="icon" href="favicon.png">
-  <link rel="apple-touch-icon" href="app-icon-1024.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="alternate" type="application/rss+xml" title="Grondstof" href="feed.xml">
   <meta property="og:title" content="Grondstof">
   <meta property="og:description" content="Dagelijks stof tot nadenken: vijf minuten circulair nieuws.">
@@ -28,6 +33,14 @@
       <button class="pill" id="rss-copy" type="button">RSS-feed kopiëren</button>
     </nav>
   </header>
+
+  <aside class="install" id="install" hidden>
+    <img src="icon-192.png" alt="">
+    <p><strong>Grondstof als app?</strong> Tik op <span class="share" aria-label="Deel">
+      <svg viewBox="0 0 24 24"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span> en kies <em>Zet op beginscherm</em>.</p>
+    <button type="button" id="install-close" aria-label="Sluiten">×</button>
+  </aside>
 
   <main class="wrap">
     <section class="hero" id="hero">

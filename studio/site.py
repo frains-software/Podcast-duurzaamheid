@@ -41,6 +41,9 @@ def build_site(audio_dir: str | None = None, out: Path | None = None) -> Path:
     art = config.ASSETS / "art"
     for name in ("cover-3000.jpg", "cover-1400.jpg", "cover-600.jpg", "favicon.png", "app-icon-1024.png"):
         shutil.copy2(art / name, out / name)
+    _app_icons(art / "app-icon-1024.png", out)
+    sw = out / "sw.js"
+    sw.write_text(sw.read_text().replace("__BUILD__", datetime.now(config.tz()).strftime("%Y%m%d%H%M%S")))
 
     episodes = window()
     src_audio = Path(audio_dir) if audio_dir else config.BUILD / "audio"
@@ -59,6 +62,15 @@ def build_site(audio_dir: str | None = None, out: Path | None = None) -> Path:
     (out / "feed.xml").write_bytes(_feed(episodes))
     (out / ".nojekyll").write_text("")
     return out
+
+
+def _app_icons(source: Path, out: Path) -> None:
+    """Iconen voor 'Zet op beginscherm' (iOS) en de web-app-manifest."""
+    from PIL import Image
+
+    icon = Image.open(source).convert("RGB")
+    for name, px in (("apple-touch-icon.png", 180), ("icon-192.png", 192), ("icon-512.png", 512)):
+        icon.resize((px, px), Image.Resampling.LANCZOS).save(out / name, optimize=True)
 
 
 def _url(path: str) -> str:

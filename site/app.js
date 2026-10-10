@@ -177,7 +177,50 @@ canvas.addEventListener("click", (e) => {
   const r = canvas.getBoundingClientRect();
   seek(((e.clientX - r.left) / r.width) * state.episode.duration);
 });
-audio.addEventListener("play", () => document.body.classList.add("playing"));
+// Bediening vanaf het vergrendelscherm en in het Bedieningspaneel.
+function mediaSession(ep) {
+  if (!("mediaSession" in navigator) || !ep) return;
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: ep.title,
+    artist: "Frans van den Berge",
+    album: "Grondstof",
+    artwork: [
+      { src: "cover-600.jpg", sizes: "600x600", type: "image/jpeg" },
+      { src: "cover-1400.jpg", sizes: "1400x1400", type: "image/jpeg" },
+    ],
+  });
+  const ms = navigator.mediaSession;
+  ms.setActionHandler("play", () => audio.play());
+  ms.setActionHandler("pause", () => audio.pause());
+  ms.setActionHandler("seekbackward", (d) => (audio.currentTime -= d.seekOffset || 15));
+  ms.setActionHandler("seekforward", (d) => (audio.currentTime += d.seekOffset || 15));
+  ms.setActionHandler("seekto", (d) => (audio.currentTime = d.seekTime));
+}
+
+// Tip 'Zet op beginscherm' voor iPhone-gebruikers die de site in Safari openen.
+(function installHint() {
+  const standalone = window.navigator.standalone || matchMedia("(display-mode: standalone)").matches;
+  const iOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+  let dismissed = false;
+  try { dismissed = localStorage.getItem("grondstof-install") === "weg"; } catch {}
+  if (standalone || !iOS || dismissed) return;
+  setTimeout(() => ($("install").hidden = false), 2500);
+  $("install-close").addEventListener("click", () => {
+    $("install").hidden = true;
+    try { localStorage.setItem("grondstof-install", "weg"); } catch {}
+  });
+})();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+
+audio.addEventListener("pause", () => "mediaSession" in navigator && (navigator.mediaSession.playbackState = "paused"));
+audio.addEventListener("playing", () => "mediaSession" in navigator && (navigator.mediaSession.playbackState = "playing"));
+audio.addEventListener("play", () => {
+  mediaSession(state.episode);
+  document.body.classList.add("playing");
+});
 audio.addEventListener("pause", () => document.body.classList.remove("playing"));
 audio.addEventListener("timeupdate", tick);
 window.addEventListener("resize", draw);
