@@ -1,9 +1,16 @@
 {
   "name": "linkedin-lancering",
-  "format": { "width": 1080, "height": 1350, "fps": 30 },
+  "format": {
+    "width": 1080,
+    "height": 1350,
+    "fps": 30
+  },
   "cta": {
     "title": "Luister op Spotify",
-    "lines": ["Elke ochtend om 09:00", "Zoek “Grondstof”"]
+    "lines": [
+      "Elke ochtend om 09:00",
+      "Zoek “Grondstof”"
+    ]
   },
   "sentences": [
     {
@@ -23,8 +30,16 @@
       "kicker": "Beleid · Markt\n· Innovatie"
     },
     {
+      "text": "Van de prijs van oud papier tot het cijfer van de dag.",
+      "kicker": "Het cijfer\nvan de dag"
+    },
+    {
       "text": "Kort, zakelijk, en altijd met duiding: wat betekent dit voor uw organisatie?",
       "kicker": "Met duiding."
+    },
+    {
+      "text": "Zodat u om vijf over negen precies weet waar het vandaag over gaat.",
+      "kicker": "Om 09:05\nweet u het."
     },
     {
       "text": "Want bij De Graaf Groep, Wastenet, Circular&Co en Product for Product zien we het elke dag: afval bestaat niet. Het is grondstof.",

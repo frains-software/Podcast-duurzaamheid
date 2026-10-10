@@ -198,7 +198,8 @@ class Painter:
         self.w, self.h = w, h
         self.small = (w // 8, h // 8)
         rng = np.random.default_rng(7)
-        self.grain = [rng.normal(0, 6, (h, w, 1)).astype(np.int16) for _ in range(6)]
+        # Stilstaande korrel: oogt als drukwerk en houdt het bestand klein.
+        self.grain = rng.normal(0, 4, (h, w, 1)).astype(np.int16)
         sy, sx = np.mgrid[0:self.small[1], 0:self.small[0]]
         self.gx, self.gy = sx / self.small[0], sy / self.small[1] * (h / w)
         self.f_title = _font("fraunces-latin-600-normal.woff2", 92)
@@ -229,7 +230,7 @@ class Painter:
             wgt = np.exp(-(d / r) ** 2 * 2.2) * min(1.0, strength)
             img = img * (1 - wgt[..., None]) + np.array(color, float) * wgt[..., None]
         base = Image.fromarray(np.clip(img, 0, 255).astype(np.uint8)).resize((self.w, self.h), Image.Resampling.BICUBIC)
-        arr = np.asarray(base, np.int16) + self.grain[int(t * 12) % len(self.grain)]
+        arr = np.asarray(base, np.int16) + self.grain
         return Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8)).convert("RGBA")
 
     def visualizer(self, size: int, t: float, energy: float, levels: list[float], reveal: float) -> Image.Image:
@@ -304,27 +305,37 @@ class Painter:
             x += w + tracking
 
 
-def caption_chunks(words: list[Word], max_chars: int = 30, max_lines: int = 2) -> list[list[list[int]]]:
-    """Groepeert woorden in ondertitelblokken van maximaal twee regels, nooit over een zin heen."""
-    chunks, lines, line, length = [], [], [], 0
+def caption_chunks(words: list[Word], max_chars: int = 30) -> list[list[list[int]]]:
+    """Ondertitelblokken van hooguit twee regels per zin, gelijkmatig verdeeld (geen losse woorden)."""
+    chunks: list[list[list[int]]] = []
+    sentences: dict[int, list[int]] = {}
     for i, w in enumerate(words):
-        new_sentence = line and words[line[-1]].sentence != w.sentence
-        if line and (length + 1 + len(w.text) > max_chars or new_sentence):
-            lines.append(line)
-            line, length = [], 0
-            if len(lines) == max_lines or new_sentence:
-                chunks.append(lines)
-                lines = []
-        line.append(i)
-        length += len(w.text) + (1 if length else 0)
-        if w.text.endswith((".", "?", "!")) and len(lines) + 1 >= max_lines:
-            lines.append(line)
-            chunks.append(lines)
-            lines, line, length = [], [], 0
-    if line:
-        lines.append(line)
-    if lines:
-        chunks.append(lines)
+        sentences.setdefault(w.sentence, []).append(i)
+    for idx in sentences.values():
+        chars = sum(len(words[i].text) + 1 for i in idx)
+        n_blocks = max(1, math.ceil(chars / (2 * max_chars)))
+        per_block = chars / n_blocks
+        blocks, block, acc = [], [], 0
+        for i in idx:
+            block.append(i)
+            acc += len(words[i].text) + 1
+            if acc >= per_block * (len(blocks) + 1) - 2 and len(blocks) < n_blocks - 1:
+                blocks.append(block)
+                block = []
+        if block:
+            blocks.append(block)
+        for block in blocks:
+            total = sum(len(words[i].text) + 1 for i in block)
+            if total <= max_chars:
+                chunks.append([block])
+                continue
+            best, split = None, 1
+            for k in range(1, len(block)):
+                left = sum(len(words[i].text) + 1 for i in block[:k])
+                score = abs(total / 2 - left)
+                if best is None or score < best:
+                    best, split = score, k
+            chunks.append([block[:split], block[split:]])
     return chunks
 
 
@@ -355,7 +366,8 @@ def render(spec_path: Path, out_path: Path | None = None) -> Path:
         "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
         "-i", str(wav),
         "-af", "loudnorm=I=-14:TP=-1.0:LRA=11",
-        "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-pix_fmt", "yuv420p", "-profile:v", "high",
+        "-c:v", "libx264", "-preset", "slow", "-crf", "20", "-maxrate", "6M", "-bufsize", "12M",
+        "-pix_fmt", "yuv420p", "-profile:v", "high",
         "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-shortest", "-movflags", "+faststart",
         str(out_path),
     ], stdin=subprocess.PIPE)
@@ -365,7 +377,8 @@ def render(spec_path: Path, out_path: Path | None = None) -> Path:
     for f in range(n_frames):
         t = f / FPS
         e = float(env[min(f, len(env) - 1)])
-        end_mix = ease((t - voice_end - 0.2) / 0.8)
+        end_mix = ease((t - voice_end - 0.1) / 0.5)          # hoofdbeeld fadet uit
+        card_mix = ease((t - voice_end - 0.55) / 0.7)        # daarna komt de eindkaart
         frame = p.background(t, e)
         d = ImageDraw.Draw(frame)
 
@@ -404,8 +417,8 @@ def render(spec_path: Path, out_path: Path | None = None) -> Path:
             _draw_caption(p, frame, words, chunks, t)
 
         # eindkaart
-        if end_mix > 0:
-            _end_card(p, frame, spec, t - voice_end, end_mix)
+        if card_mix > 0:
+            _end_card(p, frame, spec, t - voice_end - 0.55, card_mix)
 
         # onderregel
         d2 = ImageDraw.Draw(frame)
@@ -444,7 +457,7 @@ def _draw_caption(p: Painter, frame: Image.Image, words: list[Word], chunks, t: 
     overlay = Image.new("RGBA", frame.size, (0, 0, 0, 0))
     od = ImageDraw.Draw(overlay)
     od.rounded_rectangle(((p.w - box_w) / 2, y_top, (p.w + box_w) / 2, y_top + box_h), radius=28,
-                         fill=NIGHT + (int(165 * a),))
+                         fill=NIGHT + (int(215 * a),))
     for li, line in enumerate(current):
         x = (p.w - widths[li]) / 2
         y = y_top + 20 + li * line_h
@@ -452,8 +465,8 @@ def _draw_caption(p: Painter, frame: Image.Image, words: list[Word], chunks, t: 
             w = words[i]
             spoken = w.start <= t
             now = i == active and t < w.end + 0.25
-            colr = AMBER if now else CREAM
-            alpha = int(255 * a) if spoken else int(120 * a)
+            colr = AMBER if now else (CREAM if spoken else (196, 176, 214))
+            alpha = int(255 * a) if spoken else int(200 * a)
             od.text((x, y), w.text, font=p.f_sub, fill=colr + (alpha,))
             x += p.f_sub.getlength(w.text + " ")
     frame.alpha_composite(overlay)
